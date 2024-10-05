@@ -53,6 +53,8 @@ También puedes seguir estos pasos:
 ## Estructura del proyecto
 
 - `README.md`: Este archivo contiene las instrucciones del proyecto.
+- `app/main.py`: Módulo principal para ejecutar el proyecto.
+- `tdas`: Paquete con el código fuente de las clases principales del proyecto.
 
 ## Contacto
 
