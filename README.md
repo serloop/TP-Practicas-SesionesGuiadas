@@ -35,7 +35,7 @@ La *versión actual del proyecto corresponde con la última clase práctica impa
     ```
 2. Navega al directorio del proyecto:
     ```bash
-    cd ProyectoJuego
+    cd TP-Practicas_SesionesGuiadas
     ```
 
 ## Ejecución
