@@ -1,4 +1,4 @@
-from app.tdas.libro import Libro
+from app.tdas.libros.libro import Libro
 import copy
 
 class Persona:
