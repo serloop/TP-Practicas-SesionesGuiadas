@@ -1,18 +1,12 @@
 from app.tdas.persona import Persona
-from app.tdas.libros.libro import Libro
 from app.tdas.libros.libroCientifico import LibroCientifico
 from app.tdas.libros.libroInfantil import LibroInfantil
-import copy
+from app.tdas.libros.libro import Libro
 
 if __name__ == "__main__":
     # Crear instancias de Persona
     persona1: Persona = Persona("Paco", 9)
     persona2: Persona = Persona("Sergio", 25)  # Persona adulta
-
-    # Crear un libro base y probar su funcionalidad
-    libro1: Libro = Libro("El Hobbit", "J.R.R. Tolkien", 300)
-    persona2.leer_libro(libro1)
-    print("Libro1: ", libro1)
 
     # Crear un libro infantil y probar su funcionalidad
     libro_infantil: LibroInfantil = LibroInfantil("El Principito", "Antoine de Saint-Exupéry", 96, 10, True, True)
@@ -49,14 +43,11 @@ if __name__ == "__main__":
     # Usar type() para comparar tipos exactos
     print("libro_infantil es de tipo LibroInfantil? ", type(libro_infantil) is LibroInfantil)  # True
     print("libro_cientifico1 es de tipo LibroCientifico? ", type(libro_cientifico1) is LibroCientifico)  # True
-    print("libro_cientifico1 es de tipo Libro? ", type(libro_cientifico1) is Libro)  # False, no es exactamente de tipo Libro
 
     # Usar isinstance() para verificar si un objeto es de una clase o una subclase
-    print("libro_infantil es instancia de LibroInfantil? ", isinstance(libro_infantil, Libro))  # True, porque LibroInfantil hereda de Libro
-    print("libro_cientifico1 es instancia de Libro? ", isinstance(libro_cientifico1, Libro))  # True
-    print("libro_cientifico1 es instancia de LibroInfantil? ", isinstance(libro_cientifico1, LibroInfantil))  # False, no es una instancia de LibroInfantil
+    print("libro_infantil es instancia de LibroInfantil? ", isinstance(libro_infantil, LibroInfantil))  # True
+    print("libro_cientifico1 es instancia de LibroCientifico? ", isinstance(libro_cientifico1, LibroCientifico))  # True
 
     # Usar issubclass() para verificar si una clase es una subclase de otra
     print("LibroCientifico es subclase de Libro? ", issubclass(LibroCientifico, Libro))  # True, LibroCientifico hereda de Libro
     print("LibroInfantil es subclase de Libro? ", issubclass(LibroInfantil, Libro))  # True, LibroInfantil hereda de Libro
-    print("LibroInfantil es subclase de LibroCientifico? ", issubclass(LibroInfantil, LibroCientifico))  # False, no hay relación directa entre ellas

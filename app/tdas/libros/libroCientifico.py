@@ -40,11 +40,7 @@ class LibroCientifico(Libro):
 
         return f"{descripcion_basica} | {detalles_cientificos}"
 
-    '''
-    Sobrescritura completa del método:
-        - Se añade funcionalidad para verificar si el propietario tiene experiencia previa con libros científicos
-        - Se cambia el tipo de retorno, de None a bool
-    '''
+    # Implementación del método abstracto
     def comprar_libro(self, propietario: 'Persona') -> bool:
         # Verificar si la persona ha leído libros científicos con anterioridad.
         # Uso de isinstance() para verificar el tipo de libro
@@ -58,3 +54,9 @@ class LibroCientifico(Libro):
             return True
         else:
             return False
+
+    # Implementación del método abstracto
+    def recomendar_libro(self, persona: 'Persona') -> bool:
+        if self.get_campo_estudio() in persona.get_hobbies():
+            return True
+        return False

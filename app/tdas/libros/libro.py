@@ -1,4 +1,6 @@
-class Libro:
+from abc import ABC, abstractmethod
+
+class Libro (ABC):
     def __init__(self, titulo: str, autor: str, paginas: int, propietario: 'Persona' = None):
         self._titulo: str = titulo
         self._autor: str = autor
@@ -38,8 +40,13 @@ class Libro:
     def _set_propietario(self, propietario: 'Persona'):
         self._propietario = propietario
 
-    def comprar_libro(self, propietario: 'Persona'):
-        self._set_propietario(propietario)
+    @abstractmethod
+    def comprar_libro(self, propietario: 'Persona') -> bool:
+        pass
+
+    @abstractmethod
+    def recomendar_libro(self, persona: 'Persona') -> bool:
+        pass
 
     # Método mágico __str__ para obtener la información del libro
     def __str__(self) -> str:

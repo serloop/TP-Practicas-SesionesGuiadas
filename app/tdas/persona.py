@@ -1,4 +1,5 @@
 from app.tdas.libros.libro import Libro
+from app.tdas.libros.libroDiario import LibroDiario
 import copy
 
 class Persona:
@@ -21,7 +22,7 @@ class Persona:
 
         self._libros_leidos: list['Libro'] = []  # Relación de asociación
         self._libros_propiedad: list['Libro'] = []  # Relación de agregación
-        self._diario: Libro = Libro(titulo="Diario", autor=self._nombre, paginas=0, propietario=self)  # Relación de composición
+        self._diario: 'LibroDiario' = LibroDiario(titulo="Diario", autor=self._nombre, paginas=0, propietario=self)  # Relación de composición
 
     # Getter para el atributo de clase "especie"
     @classmethod

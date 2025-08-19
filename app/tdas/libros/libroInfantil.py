@@ -1,6 +1,5 @@
 from app.tdas.libros.libro import Libro
 
-
 class LibroInfantil(Libro):
 
     def __init__(self, titulo: str, autor: str, paginas: int, edad_recomendada: int, ilustraciones: bool,
@@ -45,3 +44,14 @@ class LibroInfantil(Libro):
             # Si la edad es adecuada, llamamos al método de la clase padre
             super().agregar_lector(persona)
             print(f"{persona.get_nombre()} ha sido añadido como lector del libro '{self.get_titulo()}'.")
+
+    # Implementación del método abstracto
+    def comprar_libro(self, propietario: 'Persona') -> bool:
+        self._set_propietario(propietario)
+        return True
+
+    # Implementación del método abstracto
+    def recomendar_libro(self, persona: 'Persona') -> bool:
+        if persona.get_edad() >= self.get_edad_recomendada():
+            return True
+        return False
