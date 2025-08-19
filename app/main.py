@@ -1,82 +1,62 @@
-from tdas.persona import Persona
-from tdas.libro import Libro
+from app.tdas.persona import Persona
+from app.tdas.libros.libro import Libro
+from app.tdas.libros.libroCientifico import LibroCientifico
+from app.tdas.libros.libroInfantil import LibroInfantil
 import copy
 
 if __name__ == "__main__":
-    # Crear una persona
-    persona1: 'Persona' = Persona("Sergio", 50, altura=1.75, activo=True)
-    libro1: 'Libro' = Libro("El señor de los anillos", "J.R.R. Tolkien", 1178)
-    libro2: 'Libro' = Libro("1984", "George Orwell", 328)
-    libro3: 'Libro' = Libro("Cien años de soledad", "Gabriel García Márquez", 471)
+    # Crear instancias de Persona
+    persona1: Persona = Persona("Paco", 9)
+    persona2: Persona = Persona("Sergio", 25)  # Persona adulta
 
-    # Agregar hobbies
-    persona1.agregar_hobby("Leer")
-    persona1.agregar_hobby("Viajar")
+    # Crear un libro base y probar su funcionalidad
+    libro1: Libro = Libro("El Hobbit", "J.R.R. Tolkien", 300)
+    persona2.leer_libro(libro1)
+    print("Libro1: ", libro1)
 
-    # Sergio compra libros (agregación)
-    persona1.comprar_libro(libro1)
-    persona1.comprar_libro(libro2)
+    # Crear un libro infantil y probar su funcionalidad
+    libro_infantil: LibroInfantil = LibroInfantil("El Principito", "Antoine de Saint-Exupéry", 96, 10, True, True)
+    print("Libro infantil: ", libro_infantil)
 
-    # Sergio lee libros (asociación)
-    persona1.leer_libro(libro1)  # De su propiedad
-    persona1.leer_libro(libro3)  # No es de su propiedad
+    # Agregar lector al libro infantil
+    libro_infantil.agregar_lector(persona1)  # Edad inadecuada (9 años)
+    libro_infantil.agregar_lector(persona2)  # Edad adecuada (25 años)
 
-    # Sergio hojea un libro (uso)
-    persona1.hojear_libro(libro2)
+    # Crear libros científicos y probar su funcionalidad
+    libro_cientifico1: LibroCientifico = LibroCientifico("Física Cuántica", "Einstein", 500, "Física", "Avanzado")
+    libro_cientifico2: LibroCientifico = LibroCientifico("Relatividad General", "Einstein", 300, "Física", "Avanzado")
+    print("Libro científico 1: ", libro_cientifico1)
+    print("Libro científico 2: ", libro_cientifico2)
 
-    # Mostrar datos generales (método mágico __str__ implícito)
-    print("\n--- Información de persona1 ---")
-    print(persona1)
+    # Probar la compra de los libros científicos según la experiencia de la persona
+    persona2.leer_libro(libro_cientifico1)  # Sergio lee un libro científico
+    resultado_compra1: bool = libro_cientifico1.comprar_libro(persona2)  # No tiene suficiente experiencia
+    print(f"Resultado de la compra del libro científico 1: {resultado_compra1}")  # False
 
-    # Mostrar listas de libros
-    print("\n--- Libros en propiedad ---")
-    persona1.listar_libros_propiedad()
+    persona2.leer_libro(libro_cientifico2)  # Sergio lee otro libro científico
+    resultado_compra2: bool = libro_cientifico1.comprar_libro(persona2)  # Ahora puede comprar el libro
+    print(f"Resultado de la compra del libro científico 1 después de leer más: {resultado_compra2}")  # True
 
-    print("\n--- Libros leídos ---")
-    persona1.listar_libros_leidos()
+    # Ejemplo de agregar una referencia solo en el libro científico
+    libro_cientifico1.agregar_referencia(libro_cientifico2)
 
-    # Mostrar diario (composición)
-    print(f"\nEl diario de {persona1.get_nombre()} es: {persona1.get_diario()}")
+    listado_referencias: list[Libro] = libro_cientifico1.get_referencias()
 
-    # Mostrar si es mayor de edad
-    print(f"\n¿{persona1.get_nombre()} es mayor de edad? {Persona.es_mayor_edad(persona1.get_edad())}")
+    print(f"Referencias en el libro científico 1: ")
+    for referencia in libro_cientifico1.get_referencias():
+        print("> ", referencia)
 
-    # Copia superficial
-    persona_copia: 'Persona' = copy.copy(persona1)
-    print("\n--- Copia superficial creada ---")
-    print(persona_copia)
+    # Usar type() para comparar tipos exactos
+    print("libro_infantil es de tipo LibroInfantil? ", type(libro_infantil) is LibroInfantil)  # True
+    print("libro_cientifico1 es de tipo LibroCientifico? ", type(libro_cientifico1) is LibroCientifico)  # True
+    print("libro_cientifico1 es de tipo Libro? ", type(libro_cientifico1) is Libro)  # False, no es exactamente de tipo Libro
 
-    # Modificar la copia original
-    libro_nuevo: 'Libro' = Libro("El hobbit", "J.R.R. Tolkien", 310)
-    persona1.comprar_libro(libro_nuevo)
+    # Usar isinstance() para verificar si un objeto es de una clase o una subclase
+    print("libro_infantil es instancia de LibroInfantil? ", isinstance(libro_infantil, Libro))  # True, porque LibroInfantil hereda de Libro
+    print("libro_cientifico1 es instancia de Libro? ", isinstance(libro_cientifico1, Libro))  # True
+    print("libro_cientifico1 es instancia de LibroInfantil? ", isinstance(libro_cientifico1, LibroInfantil))  # False, no es una instancia de LibroInfantil
 
-    print("\n--- Después de modificar los libros de persona1 ---")
-    print("persona1:")
-    persona1.listar_libros_propiedad()
-
-    print("persona_copia:")
-    persona_copia.listar_libros_propiedad()  # Verás que también cambia, porque es copia superficial
-
-    # Copia profunda
-    persona_deep: 'Persona' = copy.deepcopy(persona1)
-    persona_deep.comprar_libro(libro3)
-
-    print("\n--- Después de copiar profundamente y modificar persona_deep ---")
-    print("persona1:")
-    persona1.listar_libros_propiedad()
-
-    print("persona_deep:")
-    persona_deep.listar_libros_propiedad()  # Ahora tienen libros distintos
-
-    # Comparar edades entre dos personas
-    persona2: 'Persona' = Persona("Lucía", 30)
-    print(f"\n¿{persona1.get_nombre()} es mayor que {persona2.get_nombre()}? {persona1 > persona2}")
-
-    # Cambiar algunos atributos
-    persona2.set_altura(1.68)
-    persona2.set_activo(True)
-    persona2.agregar_hobby("Cocinar")
-    persona2.cumplir_años()
-
-    print("\n--- Información de persona2 actualizada ---")
-    print(persona2)
+    # Usar issubclass() para verificar si una clase es una subclase de otra
+    print("LibroCientifico es subclase de Libro? ", issubclass(LibroCientifico, Libro))  # True, LibroCientifico hereda de Libro
+    print("LibroInfantil es subclase de Libro? ", issubclass(LibroInfantil, Libro))  # True, LibroInfantil hereda de Libro
+    print("LibroInfantil es subclase de LibroCientifico? ", issubclass(LibroInfantil, LibroCientifico))  # False, no hay relación directa entre ellas
